@@ -2,6 +2,7 @@ import { ipcMain } from 'electron';
 import { TrackItemRaw } from '../../app/task-analyser.utils';
 import { dbClient } from '../../drizzle/dbClient';
 import { NewTrackItem, TrackItem } from '../../drizzle/schema';
+import { getUserId } from '../auth';
 import { State } from '../../enums/state';
 import { TrackItemType } from '../../enums/track-item-type';
 import { appEmitter } from '../../utils/appEmitter';
@@ -32,6 +33,7 @@ async function cutLogTrackItem(state: State) {
         const itemToInsert = {
             ...currentLogItem,
             endDate: now,
+            userId: getUserId() ?? 1,
         };
 
         await dbClient.insertTrackItemInternal(itemToInsert);
@@ -56,6 +58,7 @@ async function stopRunningLogTrackItem(endDate: number) {
     const itemToInsert = {
         ...currentLogItem,
         endDate,
+        userId: getUserId() ?? 1,
     };
 
     await dbClient.insertTrackItemInternal(itemToInsert);
@@ -74,6 +77,7 @@ async function createNewRunningLogTrackItem(rawItem: TrackItemRaw) {
         app: rawItem.app || 'unknown',
         title: rawItem.title || 'unknown',
         color: rawItem.color,
+        userId: getUserId() ?? 1,
         beginDate: now,
         endDate: now,
     };
@@ -88,7 +92,11 @@ export async function getOngoingLogTrackItem() {
         return null;
     }
 
-    return { ...currentLogItem, endDate: Date.now() } as TrackItem;
+    return {
+        ...currentLogItem,
+        endDate: Date.now(),
+        userId: getUserId() ?? 1,
+    } as TrackItem;
 }
 
 export async function watchAndSetLogTrackItem() {

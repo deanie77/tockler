@@ -32,6 +32,7 @@ const emptyData: Partial<TrackItem> = {
     color: null,
     url: null,
     taskName: TrackItemType.AppTrackItem,
+    userId: 1,
 };
 
 describe('trackItem.db', () => {

@@ -1,10 +1,28 @@
 import { index, integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
+export const users = sqliteTable(
+    'Users',
+    {
+        id: integer('id').primaryKey({ autoIncrement: true }),
+        name: text('name').notNull(),
+        department: text('department'),
+        role: text('role').notNull(),
+    },
+    (table) => ({
+        nameIdx: index('users_name').on(table.name),
+        deptIdx: index('users_department').on(table.department),
+        roleIdx: index('users_role').on(table.role),
+    }),
+);
+
 export const trackItems = sqliteTable(
     'TrackItems',
     {
         id: integer('id').primaryKey({ autoIncrement: true }),
         app: text('app').notNull(),
+        userId: integer('user_id')
+            .notNull()
+            .references(() => users.id, { onDelete: 'cascade' }),
         taskName: text('taskName'),
         title: text('title'),
         url: text('url'),
@@ -52,6 +70,9 @@ export const settings = sqliteTable(
 
 export type TrackItem = typeof trackItems.$inferSelect;
 export type NewTrackItem = typeof trackItems.$inferInsert;
+
+export type User = typeof users.$inferSelect;
+export type NewUser = typeof users.$inferInsert;
 
 export type AppSetting = typeof appSettings.$inferSelect;
 export type NewAppSetting = typeof appSettings.$inferInsert;

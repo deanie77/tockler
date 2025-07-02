@@ -7,6 +7,7 @@ import { SummaryPage } from './SummaryPage';
 import { SupportPage } from './SupportPage';
 import { TimelinePage } from './TimelinePage';
 import { TrayAppPage } from './TrayAppPage';
+import { DepartmentDashboard } from '../components/DepartmentDashboard';
 
 export function MainAppPage() {
     return (
@@ -57,6 +58,14 @@ export function MainAppPage() {
                     element={
                         <ErrorBoundary key="search">
                             <SearchPage />
+                        </ErrorBoundary>
+                    }
+                />
+                <Route
+                    path="department"
+                    element={
+                        <ErrorBoundary key="department">
+                            <DepartmentDashboard />
                         </ErrorBoundary>
                     }
                 />

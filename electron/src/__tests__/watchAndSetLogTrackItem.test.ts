@@ -57,6 +57,7 @@ const emptyData: Partial<TrackItem> = {
     color: null,
     url: null,
     taskName: TrackItemType.LogTrackItem,
+    userId: 1,
 };
 
 describe('watchAndSetLogTrackItem', () => {
