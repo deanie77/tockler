@@ -1,5 +1,6 @@
 import { dbClient } from '../../drizzle/dbClient';
 import { NewTrackItem, TrackItem } from '../../drizzle/schema';
+import { getUserId } from '../auth';
 import { State } from '../../enums/state';
 import { TrackItemType } from '../../enums/track-item-type';
 import { appEmitter } from '../../utils/appEmitter';
@@ -16,6 +17,7 @@ function makeStatusItem(state: State) {
         taskName: TrackItemType.StatusTrackItem,
         app: state,
         title: state.toString().toLowerCase(),
+        userId: getUserId() ?? 1,
         beginDate: now,
         endDate: now,
     };

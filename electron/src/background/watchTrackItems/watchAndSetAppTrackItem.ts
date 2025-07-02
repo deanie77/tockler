@@ -1,5 +1,6 @@
 import { dbClient } from '../../drizzle/dbClient';
 import { NewTrackItem, TrackItem } from '../../drizzle/schema';
+import { getUserId } from '../auth';
 import { State } from '../../enums/state';
 import { TrackItemType } from '../../enums/track-item-type';
 
@@ -28,6 +29,7 @@ async function setAppTrackItem(activeWindow: NormalizedActiveWindow) {
         app: activeWindow.app,
         title: activeWindow.title,
         url: activeWindow.url,
+        userId: getUserId() ?? 1,
         beginDate: now,
         endDate: now,
     };
@@ -39,7 +41,13 @@ export async function getOngoingAppTrackItem() {
     }
 
     const color = await dbClient.getAppColor(currentAppItem?.app || '');
-    return { ...currentAppItem, endDate: Date.now(), id: 0, color } as TrackItem;
+    return {
+        ...currentAppItem,
+        endDate: Date.now(),
+        id: 0,
+        color,
+        userId: getUserId() ?? 1,
+    } as TrackItem;
 }
 
 const saveOngoingTrackItem = async () => {

@@ -31,6 +31,7 @@ const emptyData: Partial<TrackItem> = {
     color: null,
     url: null,
     taskName: TrackItemType.StatusTrackItem,
+    userId: 1,
 };
 
 describe('watchAndSetStatusTrackItem', () => {

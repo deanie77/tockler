@@ -14,6 +14,7 @@ import { TrayAppPage } from './routes/TrayAppPage';
 import { ElectronEventEmitter } from './services/ElectronEventEmitter';
 import { mainStore } from './store/mainStore';
 import { useGoogleAnalytics } from './useGoogleAnalytics';
+import { AuthProvider } from './AuthContext';
 
 Settings.defaultLocale = 'en-GB';
 
@@ -39,7 +40,8 @@ export function MainRouter() {
 
     return (
         <ChartThemeProvider>
-            <RootProvider>
+            <AuthProvider>
+                <RootProvider>
                 <Routes>
                     {/* Main App with main store */}
                     <Route
@@ -71,7 +73,8 @@ export function MainRouter() {
                     {/* Fallback redirect to /app */}
                     <Route path="*" element={<Navigate to="/app" replace />} />
                 </Routes>
-            </RootProvider>
+                </RootProvider>
+            </AuthProvider>
         </ChartThemeProvider>
     );
 }
